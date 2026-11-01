@@ -51,6 +51,10 @@ Internally this was the second version; the first one was never published. That 
 - Python 3.12 and `pip install -r requirements.txt` for the local scripts.
 - The [Google Colab CLI](https://github.com/googlecolab/google-colab-cli) 0.7.5 (`colab`) for the scripts in `colab/`. They create a VM, upload the files, run the job and shut the VM down.
 
+### License
+
+The code is under the MIT license (see [LICENSE](LICENSE)). The model has its own license, the LFM Open License v1.0: see the [model card](https://huggingface.co/colia-labs/Sibundoy-Translate-1.7B).
+
 ### Contact
 
 Questions and bugs in [Issues](https://github.com/colia-labs/sibundoy-translate/issues), or at hola@colia.org.
@@ -105,6 +109,10 @@ Por dentro fue la segunda versión; la primera nunca se publicó. Por eso alguno
 
 - Python 3.12 y `pip install -r requirements.txt` para los scripts locales.
 - El [CLI de Google Colab](https://github.com/googlecolab/google-colab-cli) 0.7.5 (`colab`) para los scripts de `colab/`. Crean una VM, suben los archivos, lanzan el trabajo y apagan la VM.
+
+### Licencia
+
+El código tiene licencia MIT (ver [LICENSE](LICENSE)). El modelo tiene su propia licencia, la LFM Open License v1.0: ver la [card del modelo](https://huggingface.co/colia-labs/Sibundoy-Translate-1.7B).
 
 ### Contacto
 
