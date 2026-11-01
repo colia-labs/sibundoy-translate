@@ -18,14 +18,14 @@ import collections
 import json
 import pathlib
 import re
-import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 sys.path.insert(0, str(ROOT / 'scripts/fuentes'))
 import html_simple  # noqa: E402
-from comprobar_arxiv import CHECKER, formulas, mask, title_case  # noqa: E402
+from comprobador import check as check_text  # noqa: E402
+from comprobar_arxiv import formulas, mask, title_case  # noqa: E402
 from comprobar_cola import DIGITS, format_problem, plain  # noqa: E402
 
 SOFT = re.compile(r'cifras distintas|Mayúscula En Cada Palabra|largo extraño')
@@ -51,12 +51,10 @@ def main():
         return mask(text) if src[i]['origen'] == 'arxiv' else plain(text)
 
     ids = [i for i in got if got[i]['traduccion']]
-    lines = [json.dumps({'id': i, 'html': hide(i, src[i]['fuente']), 'traduccion': hide(i, got[i]['traduccion'])},
-                        ensure_ascii=False) for i in ids]
-    out = subprocess.run([str(CHECKER), 'comprobar'], input='\n'.join(lines), capture_output=True, text=True, check=True).stdout
-    for r in map(json.loads, out.splitlines()):
-        if not r['ok']:
-            problems[r['id']].append(r['motivo'])
+    for i in ids:
+        why = check_text(hide(i, src[i]['fuente']), hide(i, got[i]['traduccion']))
+        if why:
+            problems[i].append(why)
     for i in ids:
         s, t = src[i], got[i]['traduccion']
         if s['origen'] == 'arxiv':

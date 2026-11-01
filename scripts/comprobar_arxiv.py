@@ -3,8 +3,7 @@
 
 Por cada línea {"id", "traduccion"}:
 - que esté y una sola vez;
-- que el texto esté en español, con el comprobador del lector RSS
-  (bin/volcar_parrafos comprobar);
+- que el texto esté en español (ver comprobador.py);
 - que las fórmulas entre $…$ sean idénticas a las del original;
 - en los títulos, que no lleven Mayúscula En Cada Palabra.
 
@@ -14,14 +13,14 @@ Uso: python3 scripts/comprobar_arxiv.py [lote_NN ...]
 import json
 import pathlib
 import re
-import subprocess
 import sys
+
+from comprobador import check as check_text
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 DIR = ROOT / 'datos/arxiv'
-CHECKER = ROOT / 'bin/volcar_parrafos'
 MATH = re.compile(r'\$[^$]+\$')
-# Fórmulas de cualquier tipo: el comprobador del lector RSS toma su «<» por etiquetas.
+# Fórmulas de cualquier tipo: su «<» se tomaría por una etiqueta.
 ANY_MATH = re.compile(r'\$[^$]+\$|\\\[.*?\\\]|\\\(.*?\\\)', re.S)
 
 
@@ -68,11 +67,10 @@ def main():
             else:
                 got[r['id']] = r.get('traduccion', '')
         problems += ['falta %s' % i for i in src if i not in got]
-        lines = [json.dumps({'id': i, 'html': mask(src[i]['fuente']), 'traduccion': mask(t)}, ensure_ascii=False) for i, t in got.items()]
-        out = subprocess.run([str(CHECKER), 'comprobar'], input='\n'.join(lines), capture_output=True, text=True, check=True).stdout
-        for r in map(json.loads, out.splitlines()):
-            if not r['ok']:
-                problems.append('%s: %s' % (r['id'], r['motivo']))
+        for i, t in got.items():
+            why = check_text(mask(src[i]['fuente']), mask(t))
+            if why:
+                problems.append('%s: %s' % (i, why))
         for i, t in got.items():
             if sorted(formulas(src[i]['fuente'])) != sorted(formulas(t)):
                 problems.append('%s: las fórmulas $…$ no coinciden con el original' % i)

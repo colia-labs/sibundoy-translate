@@ -18,8 +18,7 @@ The code, its comments and the teacher instructions are in Spanish. Results, dat
 
 ### What is not here
 
-- **The training data.** We publish the code that builds it, not the data. The sources and their licenses are listed in the model card.
-- **The language checker.** The `comprobar_*` scripts call `bin/volcar_parrafos comprobar`, the checker of the RSS reader the model was built for. It is a separate program and is not in this repo. It checks that tags are intact and that the text is in Spanish.
+**The training data.** We publish the code that builds it, not the data. The sources and their licenses are listed in the model card.
 
 ### How it was built
 
@@ -29,7 +28,7 @@ Run everything from the repo root. Each script explains its inputs, outputs and 
 |---|---|---|
 | 1. Human sources | `scripts/fuentes/` | Downloads and aligns Global Voices, SciELO, Tatoeba, FineTranslations and the Spanish Python docs. Collects Wikinews, PLOS and arXiv for the teachers |
 | 2. Teacher translations | `scripts/preparar_cola.py`, `scripts/preparar_masivo.py`, `colab/lanzar_masivo.sh`, `colab/traducir_masivo.py`, `instrucciones/` | Gemma 4 31B translates on Colab with vLLM. GLM 5.3 Flash translates in agent sessions that follow `instrucciones/cola.md` |
-| 3. Checks and fixes | `scripts/comprobar_*.py`, `scripts/correcciones_masivo.py`, `scripts/revision.py` | Checks numbers, links, tags, formulas and language. Another teacher rewrites the translations that fail |
+| 3. Checks and fixes | `scripts/comprobador.py`, `scripts/comprobar_*.py`, `scripts/correcciones_masivo.py`, `scripts/revision.py` | Checks numbers, links, tags, formulas and language. Another teacher rewrites the translations that fail |
 | 4. Data mix | `scripts/unificar.py`, `scripts/unificar_v2.py` | Joins all sources, caps each one, removes anything close to the tests and writes the training file |
 | 5. Training | `colab/lanzar_entrenamiento.sh`, `colab/vigilar_entrenamiento.sh`, `colab/entrenar.py` | Rank-64 LoRA on LFM3-1.7B-Base, one epoch on a Colab L4, with a copy every 250 steps |
 | 6. Merge | `scripts/fusionar.py` | Merges the LoRA into the base model in bf16 for the Hugging Face release |
@@ -74,8 +73,7 @@ Los resultados, la mezcla de datos y lo que el modelo no hace bien están en la 
 
 ### Qué no está aquí
 
-- **Los datos de entrenamiento.** Publicamos el código que los arma, no los datos. Las fuentes y sus licencias están en la card del modelo.
-- **El comprobador de idioma.** Los scripts `comprobar_*` llaman a `bin/volcar_parrafos comprobar`, el comprobador del lector RSS para el que se hizo el modelo. Es un programa aparte y no está en este repo. Comprueba que las etiquetas estén intactas y que el texto esté en español.
+**Los datos de entrenamiento.** Publicamos el código que los arma, no los datos. Las fuentes y sus licencias están en la card del modelo.
 
 ### Cómo se hizo
 
@@ -85,7 +83,7 @@ Todo se ejecuta desde la raíz del repo. Cada script explica al principio sus en
 |---|---|---|
 | 1. Fuentes humanas | `scripts/fuentes/` | Baja y alinea Global Voices, SciELO, Tatoeba, FineTranslations y la documentación de Python en español. Reúne Wikinews, PLOS y arXiv para los profesores |
 | 2. Traducciones de los profesores | `scripts/preparar_cola.py`, `scripts/preparar_masivo.py`, `colab/lanzar_masivo.sh`, `colab/traducir_masivo.py`, `instrucciones/` | Gemma 4 31B traduce en Colab con vLLM. GLM 5.3 Flash traduce en sesiones de agente que siguen `instrucciones/cola.md` |
-| 3. Comprobación y correcciones | `scripts/comprobar_*.py`, `scripts/correcciones_masivo.py`, `scripts/revision.py` | Comprueba cifras, enlaces, etiquetas, fórmulas e idioma. Otro profesor reescribe las traducciones que fallan |
+| 3. Comprobación y correcciones | `scripts/comprobador.py`, `scripts/comprobar_*.py`, `scripts/correcciones_masivo.py`, `scripts/revision.py` | Comprueba cifras, enlaces, etiquetas, fórmulas e idioma. Otro profesor reescribe las traducciones que fallan |
 | 4. Mezcla de datos | `scripts/unificar.py`, `scripts/unificar_v2.py` | Junta todas las fuentes, pone un tope a cada una, quita lo que se parece a los exámenes y escribe el archivo de entrenamiento |
 | 5. Entrenamiento | `colab/lanzar_entrenamiento.sh`, `colab/vigilar_entrenamiento.sh`, `colab/entrenar.py` | LoRA de rango 64 sobre LFM3-1.7B-Base, una vuelta a los datos en una L4 de Colab, con una copia cada 250 pasos |
 | 6. Fusión | `scripts/fusionar.py` | Une el LoRA al modelo base en bf16 para publicarlo en Hugging Face |
