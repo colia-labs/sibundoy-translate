@@ -1,9 +1,7 @@
 """Comprueba que una traducción no esté vacía, sin traducir, en inglés o con un largo extraño.
 
-Es la comprobación del lector RSS para el que se hizo el modelo (`check` y
-`clean_output` de crates/atalaya-server/src/content.rs, en
-github.com/ruben-salas20/atalaya), pasada a Python con las mismas reglas y
-los mismos mensajes. Solo cubre texto sin etiquetas: los scripts que la usan
+Es la comprobación del lector RSS para el que se hizo el modelo, pasada a
+Python con las mismas reglas y los mismos mensajes. Solo cubre texto sin etiquetas: los scripts que la usan
 cambian antes cada «<» y «>» por palabras (ver `mask` y `plain`).
 """
 import re
