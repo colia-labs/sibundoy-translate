@@ -1,0 +1,8 @@
+# Datos, modelos y resultados se generan con los scripts y no se publican.
+datos/
+modelos/
+resultados/
+# El comprobador del lector RSS es un binario aparte (ver el README).
+bin/
+.venv/
+__pycache__/

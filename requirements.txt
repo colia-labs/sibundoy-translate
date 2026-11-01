@@ -1,0 +1,12 @@
+# Scripts locales: datos, medición y gráficas.
+# Lo que corre en Colab instala sus propias versiones (colab/entrenar.py, colab/comet.sh).
+duckdb==2.0.0
+mwparserfromhell==0.7.2
+sacrebleu==2.6.0
+matplotlib==3.11.2
+fonttools[woff]==4.68.0
+# scripts/fusionar.py
+torch==2.14.1
+transformers==5.20.2
+peft==0.21.2
+huggingface-hub==2.3.0
